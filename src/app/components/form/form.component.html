@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="getReport()">
+  <div>
+    <label for="message-types">Message Types:</label>
+    <app-message-types
+      id="message-types"
+      formControlName="messageTypes"
+      (messageType)="changeMessageType($event)"
+    ></app-message-types>
+  </div>
+  <div class="airports-wrapper">
+    <label for="airports">Airports:</label>
+    <input id="airports" type="text" formControlName="airports" FormatInput />
+  </div>
+  <div class="countries-wrapper">
+    <label for="countries">Countries:</label>
+    <input
+      id="countries"
+      type="text"
+      formControlName="countries"
+      FormatInput
+      [type]="'countries'"
+    />
+  </div>
+  <input type="submit" value="Create Briefing" />
+</form>

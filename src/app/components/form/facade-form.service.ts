@@ -1,0 +1,80 @@
+import { Injectable, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription, tap } from 'rxjs';
+import { Flight } from 'src/app/models/flight';
+import { DataService } from 'src/app/services/data.service';
+import { ReportStore } from 'src/app/state/report.store';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FacadeFormService implements OnDestroy {
+  subscribtions: Subscription[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private dataService: DataService,
+    private reportStore: ReportStore
+  ) {}
+
+  initForm(): FormGroup {
+    return this.formBuilder.group({
+      messageTypes: [false, Validators.requiredTrue],
+      airports: ['', Validators.minLength(4)],
+      countries: ['', Validators.minLength(2)],
+    });
+  }
+
+  createFlight(formValue: any, messageType: string[]): Flight {
+    const stations = formValue.airports?.toUpperCase();
+    const countries = formValue.countries?.toUpperCase();
+    return {
+      id: 'query0' + this.getValidId(stations, countries),
+      method: 'query',
+      params: [
+        {
+          id: 'briefing0' + this.getValidId(stations, countries),
+          reportTypes: messageType,
+          ...(formValue.airports &&
+            formValue.airports.trim() !== '' && {
+              stations: stations.split(' '),
+            }),
+          ...(formValue.countries &&
+            formValue.countries.trim() !== '' && {
+              countries: countries.split(' '),
+            }),
+        },
+      ],
+    };
+  }
+
+  getReports(flight: Flight): void {
+    this.subscribtions.push(
+      this.dataService
+        .getFlightReport(flight)
+        .pipe(
+          tap((response) => {
+            response.result.length === 0
+              ? alert(
+                  'Empty database or you need to write correct airport or country codes!'
+                )
+              : this.reportStore.update(response);
+          })
+        )
+        .subscribe(() => {})
+    );
+  }
+
+  getValidId(stations: string, countries: string): number {
+    if ((!!stations && !countries) || (!stations && !countries)) {
+      return 1;
+    } else if (!!countries && !stations) {
+      return 3;
+    }
+    return 2;
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtions.forEach((subscribtion) => subscribtion.unsubscribe());
+  }
+}

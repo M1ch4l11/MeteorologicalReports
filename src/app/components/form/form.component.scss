@@ -1,0 +1,47 @@
+form {
+  width: 548px;
+  padding: 18px;
+  border-radius: 12px;
+  background-color: #04aa6d;
+  font-size: large;
+  box-shadow: 0px -1px 34px -7px rgba(0, 0, 0, 0.75);
+
+  app-message-types {
+    margin-left: auto;
+    width: 56%;
+  }
+
+  div {
+    width: 100%;
+    display: flex;
+    input[type="text"] {
+      margin-left: auto;
+      width: 54%;
+      outline: none;
+    }
+  }
+
+  .airports-wrapper {
+    margin-top: 12px;
+  }
+
+  .countries-wrapper {
+    margin-top: 4px;
+  }
+
+  input[type="submit"] {
+    padding: 12px;
+    margin-top: 16px;
+    float: right;
+    background-color: #394b41;
+    color: white;
+    border: none;
+    border-radius: 12px;
+
+    &:hover {
+      background-color: #9cb0a4;
+      color: black;
+      box-shadow: 0px -1px 34px -7px rgba(0, 0, 0, 0.75);
+    }
+  }
+}
