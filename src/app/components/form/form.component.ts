@@ -45,7 +45,9 @@ export class FormComponent implements OnDestroy {
       );
       this.facadeForm.getReports(flight);
     } else {
-      alert('One message type is required');
+      alert(
+        'At least one message type, countries or airports must be selected '
+      );
     }
     this.form.reset();
   }

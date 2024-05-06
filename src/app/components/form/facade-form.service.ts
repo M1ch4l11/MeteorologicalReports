@@ -1,5 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Subscription, tap } from 'rxjs';
 import { Flight } from 'src/app/models/flight';
 import { DataService } from 'src/app/services/data.service';
@@ -18,11 +23,14 @@ export class FacadeFormService implements OnDestroy {
   ) {}
 
   initForm(): FormGroup {
-    return this.formBuilder.group({
-      messageTypes: [false, Validators.requiredTrue],
-      airports: ['', Validators.minLength(4)],
-      countries: ['', Validators.minLength(2)],
-    });
+    return this.formBuilder.group(
+      {
+        messageTypes: [false, Validators.requiredTrue],
+        airports: ['', Validators.minLength(4)],
+        countries: ['', Validators.minLength(2)],
+      },
+      { validator: this.atLeastOneIsNotSelected }
+    );
   }
 
   createFlight(formValue: any, messageType: string[]): Flight {
@@ -72,6 +80,18 @@ export class FacadeFormService implements OnDestroy {
       return 3;
     }
     return 2;
+  }
+
+  atLeastOneIsNotSelected(
+    control: AbstractControl
+  ): { [key: string]: boolean } | null {
+    const airports = control.get('airports')?.value;
+    const countries = control.get('countries')?.value;
+
+    if (!(airports || countries)) {
+      return { atLeastOneIsNotSelected: true };
+    }
+    return null;
   }
 
   ngOnDestroy(): void {
