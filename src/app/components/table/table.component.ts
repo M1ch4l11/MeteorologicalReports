@@ -5,6 +5,7 @@ import { Report, ReportMessage } from 'src/app/models/report';
 import { ReportQuery } from 'src/app/state/report.query';
 import { DateLocalPipe } from 'src/app/pipes/date-local.pipe';
 import { MessageTypePipe } from 'src/app/pipes/message-type.pipe';
+import { FacadeTableService } from './facade-table.service';
 
 @Component({
   selector: 'app-table',
@@ -17,7 +18,10 @@ export class TableComponent implements OnInit {
   reports$?: Observable<{ stationId: string; reports: Report[] }[]>;
   reportMessage$?: Observable<ReportMessage | undefined>;
 
-  constructor(private reportQuery: ReportQuery) {}
+  constructor(
+    private reportQuery: ReportQuery,
+    private facadeTable: FacadeTableService
+  ) {}
 
   ngOnInit(): void {
     this.reports$ = this.reportQuery.grouppedResult$.pipe(
@@ -29,23 +33,6 @@ export class TableComponent implements OnInit {
   groupReportsByStationId(
     reports: Report[]
   ): { stationId: string; reports: Report[] }[] {
-    const groupedReports: { [stationId: string]: Report[] } = {};
-
-    for (const report of reports) {
-      const { stationId } = report;
-      if (!groupedReports[stationId]) {
-        groupedReports[stationId] = [];
-      }
-      groupedReports[stationId].push(report);
-    }
-
-    const result: { stationId: string; reports: Report[] }[] = [];
-    for (const stationId in groupedReports) {
-      if (Object.prototype.hasOwnProperty.call(groupedReports, stationId)) {
-        result.push({ stationId, reports: groupedReports[stationId] });
-      }
-    }
-
-    return result;
+    return this.facadeTable.getGrouppedReports(reports);
   }
 }
