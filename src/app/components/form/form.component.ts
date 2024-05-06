@@ -1,17 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageTypesComponent } from '../message-types/message-types.component';
 import { FormatInputDirective } from 'src/app/directives/format-input.directive';
 import { Flight } from 'src/app/models/flight';
-import { DataService } from 'src/app/services/data.service';
-import { catchError, Subscription, tap } from 'rxjs';
-import { ReportStore } from 'src/app/state/report.store';
 import { FacadeFormService } from './facade-form.service';
 
 @Component({
@@ -28,7 +20,6 @@ import { FacadeFormService } from './facade-form.service';
 })
 export class FormComponent implements OnDestroy {
   form!: FormGroup;
-
   messageType!: string[];
 
   constructor(private facadeForm: FacadeFormService) {}
