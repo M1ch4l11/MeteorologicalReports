@@ -57,6 +57,8 @@ export class FacadeFormService implements OnDestroy {
   }
 
   getReports(flight: Flight): void {
+    console.log('request body => ', flight);
+
     this.subscribtions.push(
       this.dataService
         .getFlightReport(flight)
@@ -67,6 +69,7 @@ export class FacadeFormService implements OnDestroy {
                   'Empty database or you need to write correct airport or country codes!'
                 )
               : this.reportStore.update(response);
+            console.log('response body => ', response);
           })
         )
         .subscribe(() => {})
