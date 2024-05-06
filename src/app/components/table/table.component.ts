@@ -4,11 +4,12 @@ import { filter, map, Observable } from 'rxjs';
 import { Report, ReportMessage } from 'src/app/models/report';
 import { ReportQuery } from 'src/app/state/report.query';
 import { DateLocalPipe } from 'src/app/pipes/date-local.pipe';
+import { MessageTypePipe } from 'src/app/pipes/message-type.pipe';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CommonModule, DateLocalPipe],
+  imports: [CommonModule, DateLocalPipe, MessageTypePipe],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
