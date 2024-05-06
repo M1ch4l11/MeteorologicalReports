@@ -1,0 +1,14 @@
+<div class="message-types-container" #messageContainer>
+  <div
+    class="message-content"
+    *ngFor="let message of ['METAR', 'SIGMET', 'TAF']; let i = index"
+  >
+    <input
+      type="checkbox"
+      [id]="message + i"
+      [class.taf]="message === 'TAF'"
+      (change)="valueChanged($event, message)"
+    />
+    <label [for]="message + i">{{ message }}</label>
+  </div>
+</div>
