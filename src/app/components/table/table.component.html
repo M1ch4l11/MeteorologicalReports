@@ -1,0 +1,22 @@
+<ng-container *ngIf="reports$ | async as reports">
+  <div class="table-container" *ngIf="reports.length > 0">
+    <table id="reports">
+      <ng-container *ngFor="let reportGroup of reports">
+        <thead>
+          <tr class="stationId-wrapper">
+            <th id="stationId">{{ reportGroup.stationId }}</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reportGroup.reports">
+            <td>{{ report.queryType }}</td>
+            <td>{{ report.reportTime | dateLocal : "dd.MM.yyyy HH:mm:ss" }}</td>
+            <td [innerHTML]="report.textHTML"></td>
+          </tr>
+        </tbody>
+      </ng-container>
+    </table>
+  </div>
+</ng-container>
