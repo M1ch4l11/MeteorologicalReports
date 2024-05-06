@@ -74,7 +74,7 @@ export class FacadeFormService implements OnDestroy {
   }
 
   getValidId(stations: string, countries: string): number {
-    if ((!!stations && !countries) || (!stations && !countries)) {
+    if (!!stations && !countries) {
       return 1;
     } else if (!!countries && !stations) {
       return 3;
